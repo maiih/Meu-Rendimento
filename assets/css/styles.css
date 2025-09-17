@@ -1,0 +1,116 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+input:focus {
+    border: none;
+    outline: none;
+}
+
+:root {
+    --cor-fundo-claro: #C8E6F0;
+    --cor-verde-principal: #4CAF50;
+    --cor-verde-botao: #5CB85C;
+    --cor-fundo-input: #FFFFFF;
+    --cor-borda-input: #85e085;
+    --cor-placeholder: #129812;
+    --cor-texto-neutro: #333333;
+    --cor-texto-claro: #76d079;
+}
+
+body {
+    background-color: var(--cor-fundo-claro);
+    font-family: 'Nunito', sans-serif;
+}
+
+.divlogin {
+    flex-direction: column;
+    width: 500px;
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.divlogin:hover {
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+}
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+#remember-label {
+    color: var(--cor-texto-claro);
+}
+
+#remember {
+    width: 20px;
+    height: 20px;
+}
+
+.formheader h1 {
+    color: var(--cor-verde-principal);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+    animation-delay: 0.3s;
+}
+
+.formheader p {
+    cursor: default;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.2rem;
+    color: var(--cor-texto-claro);
+    font-weight: 500;
+    opacity: 0;
+
+    animation: fadeIn 1s forwards;
+    animation-delay: 0.7s;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+
+
+.input-field {
+    background-color: var(--cor-fundo-input);
+    border: 2px solid var(--cor-borda-input);
+    padding: 5px 10px;
+    width: 100%;
+    border-radius: 10px;
+}
+
+input:focus {
+    border: 3px solid var(--cor-verde-principal);
+}
+
+::placeholder {
+    color: var(--cor-placeholder);
+}
+
+.btn-primary {
+    background-color: var(--cor-verde-botao);
+    color: var(--cor-fundo-input);
+    padding: 5px;
+    border: none;
+    border-radius: 10px;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
