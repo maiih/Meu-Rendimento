@@ -2,7 +2,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Nunito', sans-serif;
+    border-radius: 10px;
 }
 
 input:focus {
@@ -72,7 +73,6 @@ body {
     color: var(--cor-texto-claro);
     font-weight: 500;
     opacity: 0;
-
     animation: fadeIn 1s forwards;
     animation-delay: 0.7s;
 }
@@ -83,14 +83,11 @@ body {
     }
 }
 
-
-
 .input-field {
     background-color: var(--cor-fundo-input);
     border: 2px solid var(--cor-borda-input);
     padding: 5px 10px;
     width: 100%;
-    border-radius: 10px;
 }
 
 input:focus {
@@ -114,3 +111,44 @@ a {
     text-decoration: none;
     cursor: pointer;
 }
+
+#login-form .fieldset-wrapper {
+    border-top-right-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+}
+
+.input-form-group {
+    position: relative;
+}
+
+.input-form-group label {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: var(--cor-placeholder);
+    padding: 0 5px;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    background-color: var(--cor-fundo-input);
+}
+
+.input-form-group .input-field {
+    width: 100%;
+    background-color: var(--cor-fundo-input);
+    padding: 20px 15px;
+    border-radius: 10px;
+}
+
+.input-form-group .input-field:focus+label,
+.input-form-group .input-field:valid+label {
+    top: 0;
+    border-radius: 10px;
+    padding: 5px;
+    font-size: 0.9rem;
+    color: var(--cor-placeholder);
+    background-color: var(--cor-fundo-claro);
+    transform: translateY(-50%);
+    border: 2px solid var(--cor-verde-principal);
+}
+
