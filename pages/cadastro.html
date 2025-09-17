@@ -10,36 +10,43 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <meta name="description" content="Página de login do Meu Rendimento">
-    <meta name="keywords" content="Login, Meu Rendimento, Finanças, Controle Financeiro">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <meta name="description" content="Página de cadastro do Meu Rendimento">
+    <meta name="keywords" content="Cadastro, Meu Rendimento, Finanças, Controle Financeiro">
     <meta name="author" content="Maikelen Pasquali">
-    <title>Login | Meu Rendimento </title>
+    <title>Cadastro | Meu Rendimento </title>
 </head>
 
 <body>
     <main class="min-vh-100 justify-content-center align-items-center container d-flex">
         <div class="divlogin d-flex justify-content-center container rounded-3">
             <div class="formheader text-center">
-                <h1 class="mb-0">Que bom que voltou!</h1>
-                <p>Logue na sua conta</p>
+                <h1 class="mb-0">Criar uma conta</h1>
+                <p>Junte-se a gente!</p>
             </div>
             <form action="/meu_rendimento/login" method="post" id="login-form">
+                <div class="input-form-group">
+                    <input type="text" class="input-field" id="name" name="name" required placeholder=" ">
+                    <label for="name">Nome Completo</label>
+                </div>
                 <div class="input-form-group">
                     <input class="input-field" type="email" id="username" name="username" required placeholder=" ">
                     <label for="username">Email</label>
                 </div>
                 <div class="input-form-group">
+                    <input type="date" class="input-field" id="data-nascimento" name="data-nascimento" required placeholder=" ">
+                    <label for="data-nascimento">Data de nascimento</label>
+                </div>
+                <div class="input-form-group">
                     <input class="input-field" type="password" id="password" name="password" required placeholder=" ">
                     <label for="password">Senha</label>
                 </div>
-                <label for="remember" id="remember-label" class="fw-bold d-flex align-items-center">
-                    <input type="checkbox" id="remember" name="remember" class="me-2">
-                    Lembre de mim
-                </label>
-                <button class="btn-primary" type="submit">Logar</button>
-                <p class="text-center">Ainda não tem conta? <a class="fw-bold" href="pages/cadastro.html">Crie uma
-                        aqui!</a></p>
+                <div class="input-form-group">
+                    <input class="input-field" type="password" id="verifyPassword" name="verifyPassword" required placeholder=" ">
+                    <label for="verifyPassword">Confirma sua senha</label>
+                </div>
+                <button class="btn-primary" type="submit">Cadastrar</button>
+                <p class="text-center">Já tem uma conta? <a class="fw-bold" href="../index.html">Logue aqui!</a></p>
             </form>
         </div>
     </main>
