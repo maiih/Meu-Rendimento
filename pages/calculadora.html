@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <meta name="description" content="Página de calculadora do Meu Rendimento">
+    <meta name="keywords" content="Calculadora, Meu Rendimento, Finanças, Controle Financeiro">
+    <meta name="author" content="Maikelen Pasquali">
+    <title>Calculadora de Investimentos — Portfólio</title>
+
+<style>
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;max-width:1100px;margin:18px auto;padding:16px;color:#111}
+  h1{margin-bottom:6px}
+  label{display:block;margin-top:10px;font-size:14px}
+  input,select,button{font-size:14px}
+  input,select{padding:8px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box}
+  .row{display:flex;gap:12px}
+  .col{flex:1}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  button{padding:10px 14px;border:0;background:#0b79d0;color:#fff;border-radius:8px;cursor:pointer}
+  .small{width:140px}
+  table{width:100%;border-collapse:collapse;margin-top:12px}
+  th,td{padding:8px;border:1px solid #eee;text-align:right;font-size:13px}
+  th{text-align:left;background:#f8f8f8}
+  .result{margin-top:12px;padding:12px;border-radius:8px;background:#f1f9ff}
+  .muted{color:#666;font-size:13px}
+  #assetsList{margin-top:10px;border:1px dashed #ddd;padding:10px;border-radius:8px;background:#fafafa}
+  .assetRow{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+  .assetRow input[type="number"]{width:110px}
+  .assetRow select{width:260px}
+  .assetRow .remove{background:#ff5c5c;padding:6px;border-radius:6px;color:#fff;border:0;cursor:pointer}
+  .note{font-size:12px;color:#555;margin-top:8px}
+  .assetRow .label-col {min-width:180px}
+</style>
+</head>
+<body>
+  <h1>Calculadora de Investimentos — Portfólio</h1>
+  <p class="muted">Escolha entre tipos de investimento, atribua % de alocação e calcule o valor futuro do portfólio (aporte mensal + PV). Edite taxas se quiser.</p>
+
+  <label>Investimento inicial (R$)
+    <input id="pv" type="number" step="0.01" value="10000">
+  </label>
+
+  <div class="row">
+    <div class="col">
+      <label>Contribuição mensal (R$)
+        <input id="pmt" type="number" step="0.01" value="500">
+      </label>
+    </div>
+    <div class="col">
+      <label>Horizonte (anos)
+        <input id="years" type="number" step="1" value="20">
+      </label>
+    </div>
+    <div class="col">
+      <label>Capitalizações por ano
+        <select id="compounds">
+          <option value="12" selected>Mensal (12)</option>
+          <option value="4">Trimestral (4)</option>
+          <option value="1">Anual (1)</option>
+          <option value="365">Diário (365)</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <label>Inflação anual estimada (%) — (opcional)
+    <input id="infl" type="number" step="0.01" value="3">
+  </label>
+
+  <div class="controls">
+    <button id="addAsset" type="button"><i class="fas fa-plus me-2"></i>Adicionar ativo</button>
+    <button id="calc" type="button"><i class="fas fa-calculator me-2"></i>Calcular portfólio</button>
+    <button id="export" type="button"><i class="fas fa-file-csv me-2"></i>Exportar CSV</button>
+    <button id="example" type="button"><i class="fas fa-bolt me-2"></i>Exemplo rápido</button>
+  </div>
+
+  <div id="assetsList" class="mt-3">
+    <!-- asset rows injected here -->
+  </div>
+
+  <div id="out" class="result" style="display:none">
+    <div id="summary"></div>
+    <div id="realSummary" style="margin-top:8px;color:#333"></div>
+  </div>
+
+  <div id="tableWrap"></div>
+
+<!-- SCRIPT FUNCIONAL DO PORTFÓLIO -->
+<script>
+/* Lista de investimentos (33 opções) */
+const INVESTMENTS = [
+  {id:'cdb', label:'CDB (banco)', rate:8.0},
+  {id:'lci', label:'LCI (imobiliária)', rate:7.5},
+  {id:'lca', label:'LCA (agrícola)', rate:7.5},
+  {id:'tesouro_selic', label:'Tesouro Selic', rate:5.0},
+  {id:'tesouro_ipca', label:'Tesouro IPCA+', rate:6.0},
+  {id:'tesouro_prefix', label:'Tesouro Prefixado', rate:7.0},
+  {id:'lc', label:'Letra de Câmbio (LC)', rate:8.0},
+  {id:'debentures', label:'Debêntures', rate:9.0},
+  {id:'cra', label:'CRA', rate:9.0},
+  {id:'cri', label:'CRI', rate:9.0},
+  {id:'fundos_di', label:'Fundos DI', rate:6.0},
+  {id:'fundos_mult', label:'Fundos Multimercado', rate:9.0},
+  {id:'fundos_acoes', label:'Fundos de Ações', rate:12.0},
+  {id:'acoes_br', label:'Ações — renda variável (BR)', rate:12.0},
+  {id:'etfs', label:'ETFs (renda variável)', rate:11.0},
+  {id:'bdrs', label:'BDRs', rate:10.0},
+  {id:'fiis', label:'FIIs (Fundos Imobiliários)', rate:7.0},
+  {id:'poupanca', label:'Poupança', rate:3.0},
+  {id:'pgbl', label:'Previdência Privada (PGBL)', rate:8.0},
+  {id:'vgb', label:'Previdência Privada (VGBL)', rate:8.0},
+  {id:'coe', label:'COE (estruturados)', rate:8.0},
+  {id:'ouro', label:'Ouro', rate:6.0},
+  {id:'commodities', label:'Commodities (agrícolas)', rate:7.0},
+  {id:'criptos', label:'Criptomoedas', rate:20.0},
+  {id:'acoes_intl', label:'Ações internacionais', rate:10.0},
+  {id:'bonds_int', label:'Bonds internacionais', rate:4.0},
+  {id:'high_yield', label:'High Yield (corporate)', rate:12.0},
+  {id:'private_equity', label:'Private Equity', rate:15.0},
+  {id:'venture', label:'Venture Capital', rate:20.0},
+  {id:'hedge', label:'Hedge Funds', rate:10.0},
+  {id:'tesouro_prefix_sem', label:'Tesouro Prefixado (juros semestrais)', rate:7.0},
+  {id:'fundo_credito', label:'Fundo de Crédito Privado', rate:9.0}
+];
+
+let assetCounter = 0;
+const assetsContainer = document.getElementById('assetsList');
+
+function fmt(n){ return n.toLocaleString('pt-BR', {style:'currency', currency:'BRL'}); }
+
+function createAssetRow(prefill){
+  assetCounter++;
+  const row = document.createElement('div');
+  row.className = 'assetRow';
+  row.dataset.index = assetCounter;
+
+  // label column (for small screens)
+  const labelCol = document.createElement('div');
+  labelCol.className = 'label-col';
+  labelCol.style.flex = '1 1 180px';
+
+  const sel = document.createElement('select');
+  sel.className = 'form-select';
+  INVESTMENTS.forEach(inv=>{
+    const o = document.createElement('option');
+    o.value = inv.id;
+    o.textContent = inv.label;
+    o.dataset.rate = inv.rate;
+    sel.appendChild(o);
+  });
+  if (prefill && prefill.id) sel.value = prefill.id;
+
+  const rateIn = document.createElement('input');
+  rateIn.type = 'number';
+  rateIn.step = '0.01';
+  rateIn.className = 'form-control';
+  rateIn.style.width = '110px';
+  rateIn.value = (prefill && prefill.rate !== undefined) ? prefill.rate : INVESTMENTS.find(i=>i.id===sel.value).rate;
+  rateIn.title = 'Taxa anual esperada (%) — edite se necessário';
+
+  labelCol.appendChild(sel);
+
+  // allocation input
+  const alloc = document.createElement('input');
+  alloc.type = 'number';
+  alloc.step = '0.01';
+  alloc.className = 'form-control';
+  alloc.style.width = '110px';
+  alloc.value = (prefill && prefill.allocation !== undefined) ? prefill.allocation : 0;
+  alloc.title = 'Percentual de alocação (%) deste ativo';
+
+  // preview
+  const preview = document.createElement('div');
+  preview.style.minWidth = '160px';
+  preview.style.fontSize = '13px';
+  preview.style.color = '#333';
+  preview.innerHTML = '';
+
+  // remove
+  const rem = document.createElement('button');
+  rem.type = 'button';
+  rem.className = 'remove';
+  rem.textContent = 'Remover';
+
+  // structure
+  row.appendChild(labelCol);
+  row.appendChild(rateIn);
+  row.appendChild(alloc);
+  row.appendChild(preview);
+  row.appendChild(rem);
+
+  // styles for layout
+  row.querySelectorAll('select, input').forEach(el=> el.style.marginRight = '6px');
+
+  assetsContainer.appendChild(row);
+
+  // events
+  sel.addEventListener('change', ()=> {
+    const r = INVESTMENTS.find(i=>i.id===sel.value).rate;
+    rateIn.value = r;
+    updatePreview();
+  });
+  rateIn.addEventListener('input', updatePreview);
+  alloc.addEventListener('input', updatePreview);
+  rem.addEventListener('click', ()=> { row.remove(); updatePreview(); });
+
+  function updatePreview(){
+    const r = parseFloat(rateIn.value) || 0;
+    const a = parseFloat(alloc.value) || 0;
+    preview.innerHTML = `${r.toFixed(2)}% a.a. · ${a.toFixed(2)}% alocação`;
+  }
+  updatePreview();
+}
+
+// iniciais
+createAssetRow({id:'cdb', allocation:60});
+createAssetRow({id:'fundos_mult', allocation:40});
+
+document.getElementById('addAsset').addEventListener('click', function(){
+  if (assetsContainer.querySelectorAll('.assetRow').length >= INVESTMENTS.length){
+    alert('Já existem os 33 ativos possíveis — remova algum para adicionar outro.');
+    return;
+  }
+  createAssetRow();
+});
+
+function getAssetsFromUI(){
+  const rows = [...assetsContainer.querySelectorAll('.assetRow')];
+  return rows.map(r=>{
+    const sel = r.querySelector('select');
+    const rate = parseFloat(r.querySelector('input[type="number"]').value) || 0;
+    const inputs = r.querySelectorAll('input[type="number"]');
+    const alloc = parseFloat(inputs[1].value) || 0;
+    const label = sel.options[sel.selectedIndex].text;
+    return {id: sel.value, label, rate, allocation: alloc};
+  });
+}
+
+// cálculos
+function fv_lump(pv, annualRatePct, years, compoundsPerYear){
+  var r = annualRatePct/100;
+  var n = compoundsPerYear;
+  var ratePer = r / n;
+  var totalPeriods = n * years;
+  return pv * Math.pow(1 + ratePer, totalPeriods);
+}
+
+function fv_series_monthly(pmtMonthly, annualRatePct, years, compoundsPerYear){
+  var r = annualRatePct/100;
+  var n = compoundsPerYear;
+  var ratePer = r / n;
+  var totalPeriods = n * years;
+  var pmtPerPeriod = pmtMonthly;
+  if (n !== 12){
+    var monthsPerPeriod = 12 / n;
+    pmtPerPeriod = pmtMonthly * monthsPerPeriod;
+  }
+  if (ratePer === 0) return pmtPerPeriod * totalPeriods;
+  return pmtPerPeriod * ( (Math.pow(1 + ratePer, totalPeriods) - 1) / ratePer );
+}
+
+function computeYearlySeriesByAsset(pvTotal, pmtMonthlyTotal, assets, years, compoundsPerYear){
+  const series = [];
+  const curBalances = {};
+  assets.forEach(a=>{
+    const share = a.allocation / 100;
+    curBalances[a.id] = (pvTotal || 0) * share;
+  });
+
+  const n = compoundsPerYear;
+  const monthly = 12;
+  for (let y=1; y<=years; y++){
+    for (let p=0; p<n; p++){
+      assets.forEach(a=>{
+        const r = a.rate/100;
+        const ratePer = r / n;
+        curBalances[a.id] = curBalances[a.id] * (1 + ratePer);
+        const monthsPerPeriod = monthly / n;
+        const contribThisPeriod = (pmtMonthlyTotal || 0) * (a.allocation/100) * monthsPerPeriod;
+        curBalances[a.id] += contribThisPeriod;
+      });
+    }
+    let total = 0;
+    assets.forEach(a => total += curBalances[a.id]);
+    series.push({year: y, balance: total, perAsset: JSON.parse(JSON.stringify(curBalances))});
+  }
+  return series;
+}
+
+// calcular botão
+document.getElementById('calc').addEventListener('click', function(){
+  const pv = Number(document.getElementById('pv').value) || 0;
+  const pmt = Number(document.getElementById('pmt').value) || 0;
+  const years = Number(document.getElementById('years').value) || 0;
+  const compounds = Number(document.getElementById('compounds').value) || 12;
+  const infl = Number(document.getElementById('infl').value) || 0;
+
+  const assets = getAssetsFromUI();
+
+  // valida soma das alocações
+  const totalAlloc = assets.reduce((s,a)=>s + (a.allocation||0), 0);
+  if (Math.abs(totalAlloc - 100) > 0.01){
+    if (totalAlloc === 0){
+      if (!confirm('A soma das alocações é 0%. Deseja prosseguir (todas as alocações serão ignoradas e o portfólio terá taxa média 0%)?')) {
+        return;
+      }
+    } else {
+      alert('A soma das alocações precisa ser 100%. soma atual: ' + totalAlloc.toFixed(2) + '%. Ajuste os % por favor.');
+      return;
+    }
+  }
+
+  const yearly = computeYearlySeriesByAsset(pv, pmt, assets, years, compounds);
+  const final = yearly.length ? yearly[yearly.length-1].balance : pv;
+
+  const weightedRate = assets.reduce((s,a) => s + (a.rate * (a.allocation||0)/100), 0);
+
+  document.getElementById('out').style.display = 'block';
+  document.getElementById('summary').innerHTML =
+    `<strong>Saldo futuro nominal do portfólio:</strong> ${fmt(final)} <br>
+     <strong>Taxa média ponderada (nominal):</strong> ${weightedRate.toFixed(2)}% a.a.`;
+
+  if (infl && infl > 0){
+    const realAnnual = (1 + weightedRate/100) / (1 + infl/100) - 1;
+    const realFV = fv_lump(pv, realAnnual*100, years, compounds) + fv_series_monthly(pmt, realAnnual*100, years, compounds);
+    document.getElementById('realSummary').innerHTML =
+      `<strong>Valor ajustado pela inflação:</strong> ${fmt(realFV)} (taxa real anual ≈ ${(realAnnual*100).toFixed(3)}%)`;
+  } else {
+    document.getElementById('realSummary').innerHTML = '';
+  }
+
+  // tabela anual
+  let html = '<table class="table"><thead><tr><th>Ano</th><th>Saldo no final do ano</th></tr></thead><tbody>';
+  yearly.forEach(r=>{
+    html += `<tr><td style="text-align:left">Ano ${r.year}</td><td>${fmt(r.balance)}</td></tr>`;
+  });
+  html += '</tbody></table>';
+  document.getElementById('tableWrap').innerHTML = html;
+});
+
+// export CSV
+document.getElementById('export').addEventListener('click', function(){
+  const pv = Number(document.getElementById('pv').value) || 0;
+  const pmt = Number(document.getElementById('pmt').value) || 0;
+  const years = Number(document.getElementById('years').value) || 0;
+  const compounds = Number(document.getElementById('compounds').value) || 12;
+  const assets = getAssetsFromUI();
+  const series = computeYearlySeriesByAsset(pv, pmt, assets, years, compounds);
+
+  let csv = 'Ano,Saldo';
+  assets.forEach(a => csv += ',' + '"' + a.label + ' (R$)"');
+  csv += '\n';
+  series.forEach(s=>{
+    csv += s.year + ',' + s.balance.toFixed(2);
+    assets.forEach(a => {
+      const val = s.perAsset[a.id] || 0;
+      csv += ',' + val.toFixed(2);
+    });
+    csv += '\n';
+  });
+
+  const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'portfolio_anos.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+// exemplo rápido
+document.getElementById('example').addEventListener('click', function(){
+  document.getElementById('pv').value = 10000;
+  document.getElementById('pmt').value = 500;
+  document.getElementById('years').value = 20;
+  document.getElementById('compounds').value = 12;
+  document.getElementById('infl').value = 3;
+  // reset assets
+  assetsContainer.innerHTML = '';
+  createAssetRow({id:'cdb', allocation:60});
+  createAssetRow({id:'fundos_mult', allocation:40});
+  document.getElementById('calc').click();
+});
+</script>
+
+</body>
+</html>
