@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,64 +11,41 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/styles.css">
-    <meta name="description" content="Calculadora de Investimentos - Meu Rendimento">
-    <meta name="keywords" content="Calculadora, Investimentos, Finanças, Meu Rendimento, Controle Financeiro">
+    <meta name="description" content="Página de login do Meu Rendimento">
+    <meta name="keywords" content="Login, Meu Rendimento, Finanças, Controle Financeiro">
     <meta name="author" content="Maikelen Pasquali">
-    <title>Calculadora de Investimentos</title>
+    <title>Login | Meu Rendimento </title>
 </head>
 
-<body class="d-flex flex-column align-items-center justify-content-center min-vh-100">
-
-    <div class="calculadora-container bg-white p-4 rounded shadow">
-        <div class="calc-header text-center mb-4">
-            <h1><i class="fas fa-chart-line me-2"></i>Calculadora de Investimentos</h1>
-            <p>Descubra quanto seu dinheiro pode render ao longo do tempo</p>
+<body>
+    <main class="min-vh-100 justify-content-center align-items-center container d-flex">
+        <div class="divlogin d-flex justify-content-center container rounded-3">
+            <div class="formheader text-center">
+                <h1 class="mb-0">Que bom que voltou!</h1>
+                <p>Logue na sua conta</p>
+            </div>
+            <form action="/meu_rendimento/login" method="post" id="login-form">
+                <div class="input-form-group">
+                    <input class="input-field" type="email" id="username" name="username" required placeholder=" ">
+                    <label for="username">Email</label>
+                </div>
+                <div class="input-form-group">
+                    <input class="input-field" type="password" id="password" name="password" required placeholder=" ">
+                    <label for="password">Senha</label>
+                </div>
+                <label for="remember" id="remember-label" class="fw-bold d-flex align-items-center">
+                    <input type="checkbox" id="remember" name="remember" class="me-2">
+                    Lembre de mim
+                </label>
+                <button class="btn-primary" type="submit">Logar</button>
+                <p class="text-center">Ainda não tem conta? <a class="fw-bold" href="pages/cadastro.html">Crie uma
+                        aqui!</a></p>
+            </form>
         </div>
-
-        <form id="calc-form">
-            <div class="input-form-group mb-3">
-                <input type="number" id="pv" class="input-field" required>
-                <label for="pv">Investimento inicial (R$)</label>
-            </div>
-
-            <div class="input-form-group mb-3">
-                <input type="number" id="pmt" class="input-field" required>
-                <label for="pmt">Aporte mensal (R$)</label>
-            </div>
-
-            <div class="input-form-group mb-3">
-                <input type="number" id="rate" class="input-field" required>
-                <label for="rate">Taxa anual (%)</label>
-            </div>
-
-            <div class="input-form-group mb-3">
-                <input type="number" id="years" class="input-field" required>
-                <label for="years">Prazo (anos)</label>
-            </div>
-
-            <div class="input-form-group mb-3">
-                <input type="number" id="infl" class="input-field">
-                <label for="infl">Inflação anual (%) (opcional)</label>
-            </div>
-
-            <div class="d-grid mt-3">
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-calculator me-2"></i>Calcular
-                </button>
-            </div>
-        </form>
-
-        <div id="result" class="mt-4 text-center" style="display:none;">
-            <h5 class="text-success"><i class="fas fa-coins me-2"></i>Resultado</h5>
-            <p><strong>Valor Futuro:</strong> <span id="fv-result"></span></p>
-            <p id="real-result" class="text-muted"></p>
-        </div>
-    </div>
-
-    <script src="assets/js/main.js"></script>
+    </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-
 </body>
+
 </html>
