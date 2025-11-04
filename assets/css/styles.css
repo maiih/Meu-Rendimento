@@ -19,6 +19,21 @@ input:focus {
     --cor-placeholder: #129812;
     --cor-texto-neutro: #333333;
     --cor-texto-claro: #76d079;
+    --bg: #E9F2FB;            /* calm blue background */
+    --paper: #FFFFFF;         /* card background */
+    --paper-alt: #F7FAFE;     /* subtle alternate paper */
+    --text: #1F2937;          /* slate-800 */
+    --muted: #6B7280;         /* slate-500 */
+    --accent: #0EA5E9;        /* sky-500 */
+    --accent-strong: #0369A1; /* sky-800 */
+    --success: #16A34A;       /* green-600 */
+    --warning: #B45309;       /* amber-700 */
+    --danger: #DC2626;        /* red-600 */
+    --ring: #94A3B8;          /* slate-400 */
+    --radius: 14px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.06);
+    --shadow-md: 0 6px 18px rgba(2, 6, 23, 0.08);
+    --shadow-lg: 0 12px 30px rgba(2, 6, 23, 0.12);
 }
 
 body {
@@ -113,4 +128,302 @@ a {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+/* Page Golpes CSS */
+
+/* ===============================================
+   Accessible, professional CSS for "Golpes" page
+   Focused on seniors: larger fonts, high contrast,
+   generous spacing, and clear cards.
+   (Navbar kept as-is)
+   =============================================== */
+
+/* ---------- Design Tokens ---------- */
+
+/* ---------- Base ---------- */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-size:18px;
+  line-height:1.75;
+  color:var(--text);
+  background: radial-gradient(1200px 600px at 50% -10%, #FFFFFF 0%, var(--bg) 60%, var(--bg) 100%);
+}
+img{max-width:100%;height:auto;display:block}
+
+/* ---------- Navbar (mantida) ---------- */
+/* ===============================================
+   CSS – Página de Golpes (galeria de notícias)
+   - Navbar mantida
+   - Cards só imagem; hover mostra título
+   - Clique abre modal com o texto
+   - Acessível e responsivo
+   =============================================== */
+
+/* ---------- Tokens ---------- */
+:root{
+  --bg: #E9F2FB;
+  --paper: #FFFFFF;
+  --paper-alt: #F7FAFE;
+  --text: #1F2937;
+  --muted: #6B7280;
+  --accent: #0EA5E9;        /* azul destaque */
+  --accent-strong: #0369A1;
+  --warning: #B45309;
+  --radius: 14px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.06);
+  --shadow-md: 0 6px 18px rgba(2, 6, 23, 0.08);
+  --shadow-lg: 0 12px 30px rgba(2, 6, 23, 0.12);
+}
+
+/* ---------- Base ---------- */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-size:18px;
+  line-height:1.75;
+  color:var(--text);
+  background: radial-gradient(1200px 600px at 50% -10%, #FFFFFF 0%, var(--bg) 60%, var(--bg) 100%);
+}
+img{max-width:100%;height:auto;display:block}
+
+/* ---------- Navbar (mantida) ---------- */
+.navbar{
+  position:fixed;top:0;left:0;width:100%;
+  background:#004aad;color:#fff;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 20px;z-index:1000;box-shadow:var(--shadow-sm)
+}
+.logo{color:#fff;font-size:22px;font-weight:700;letter-spacing:.2px}
+.nav-links{list-style:none;display:flex;gap:18px;margin:0;padding:0}
+.nav-links a{color:#fff;text-decoration:none;font-weight:600;letter-spacing:.2px;padding:8px 10px;border-radius:10px}
+.nav-links a:hover,.nav-links a:focus-visible{background:rgba(255,255,255,.12);outline:none}
+.menu-toggle{display:none;font-size:26px;color:#fff;cursor:pointer}
+@media(max-width:768px){
+  .nav-links{position:absolute;top:60px;right:12px;background:#004aad;flex-direction:column;width:min(88vw,320px);display:none;padding:14px;border-radius:12px;box-shadow:var(--shadow-md)}
+  .nav-links.active{display:flex}
+  .menu-toggle{display:block}
+}
+
+/* ---------- Page Shell ---------- */
+.page-golpes{
+  display:flex;justify-content:center;align-items:flex-start;
+  min-height:100vh;padding:96px 16px 40px;background:transparent;color:var(--text)
+}
+.frame{width:100%;max-width:1120px;padding:0 6px}
+.paper{
+  background:var(--paper);
+  padding:clamp(20px,3.5vw,36px);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-md);
+  border:1px solid rgba(2,6,23,.06);
+}
+.paper h1{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  text-align:center;color:var(--accent-strong);
+  font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;
+  margin:0 0 22px 0;padding:14px;border-radius:16px;
+  background:linear-gradient(180deg,var(--paper),var(--paper-alt));
+  border:1px solid rgba(2,6,23,.06);box-shadow:var(--shadow-sm)
+}
+.paper h1 i{color:var(--warning)}
+
+/* ---------- Grade de notícias ---------- */
+.news-grid{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap:18px;
+}
+@media(max-width:980px){ .news-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media(max-width:620px){ .news-grid{ grid-template-columns: 1fr; } }
+
+/* Card somente imagem */
+.news-card{
+  position:relative;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:var(--shadow-sm);
+  background:#000; /* para fade de imagem antes de carregar */
+  isolation:isolate;
+}
+
+/* Link cobre o card todo */
+.news-link{
+  display:block; position:relative;
+  outline:none;
+}
+.news-link img{
+  width:100%; height:220px; object-fit:cover;
+  transition: transform .35s ease;
+}
+.news-card:hover img,
+.news-link:focus-visible img{
+  transform: scale(1.03);
+}
+
+/* Overlay com título (aparece no hover) */
+.news-overlay{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
+  padding:14px;
+  background: linear-gradient(0deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.15) 60%, rgba(0,0,0,0) 100%);
+  opacity:0; transition: opacity .25s ease;
+}
+.news-card:hover .news-overlay,
+.news-link:focus-visible + .news-overlay,
+.news-link:focus-visible .news-overlay{
+  opacity:1;
+}
+
+.news-title{
+  margin:0; padding:.35rem .6rem; border-radius:10px;
+  background: rgba(255,255,255,.9);
+  color:#0f172a; font-size:1rem; font-weight:800; text-align:center;
+  max-width:90%;
+}
+.news-hint{
+  margin-top:8px;
+  font-size:.9rem;
+  color:#e5e7eb;
+  text-shadow:0 1px 2px rgba(0,0,0,.6);
+}
+
+/* ---------- Modal ---------- */
+.modal{
+  position:fixed; inset:0; display:none; z-index:1200;
+}
+.modal.open{ display:block; }
+.modal-backdrop{
+  position:absolute; inset:0; background:rgba(2,6,23,.5);
+}
+.modal-content{
+  position:absolute; inset:auto; left:50%; top:50%;
+  transform:translate(-50%,-50%);
+  width:min(760px, 94vw);
+  background:var(--paper); color:var(--text);
+  border-radius:16px; box-shadow:var(--shadow-lg);
+  border:1px solid rgba(2,6,23,.06);
+  max-height:86vh; overflow:auto;
+}
+.modal-body{
+  padding:20px 22px 24px;
+}
+.modal-body h3{
+  margin:0 0 10px 0; font-size:1.35rem; font-weight:800; color:var(--accent-strong);
+}
+.modal-body p{ margin:0 0 12px 0; line-height:1.85; }
+.modal-close{
+  position:absolute; top:8px; right:10px;
+  appearance:none; border:0; background:transparent;
+  font-size:28px; line-height:1; cursor:pointer;
+  color:#334155; padding:6px 8px; border-radius:10px;
+}
+.modal-close:hover, .modal-close:focus-visible{
+  background:#f1f5f9; outline:none;
+}
+
+/* ---------- Acessibilidade foco ---------- */
+a,button,[role="button"]{ outline:none; }
+a:focus-visible,button:focus-visible,.menu-toggle:focus-visible{
+  box-shadow:0 0 0 3px #fff, 0 0 0 6px #94A3B8; border-radius:12px;
+}
+
+/* ---------- Reduzir movimento ---------- */
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important; transition:none!important; scroll-behavior:auto!important}
+}
+
+/* Page Dicas – Passo a Passo */
+
+.page-dicas {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 96px 16px 40px;
+  background: var(--bg, #E9F2FB);
+  color: var(--text, #1F2937);
+}
+
+/* Frame */
+.frame-dicas {
+  width: 100%;
+  max-width: 900px;
+}
+
+/* Paper */
+.paper-dicas {
+  background: #fff;
+  padding: clamp(24px, 4vw, 40px);
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.08);
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+/* Título principal */
+.paper-dicas h1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  color: #166534;
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 800;
+  margin-bottom: 32px;
+}
+.paper-dicas h1 i { color: gold; }
+
+/* Passo */
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 18px;
+  border-radius: 12px;
+  background: #F9FAFB;
+  border: 1px solid rgba(0,0,0,.05);
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.05);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.step:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,.12);
+}
+
+/* Número do passo */
+.step-number {
+  flex: 0 0 40px;
+  height: 40px;
+  background: #22C55E;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,.2);
+}
+
+/* Conteúdo do passo */
+.step-content h2 {
+  margin: 0 0 6px 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #166534;
+}
+.step-content p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
 }

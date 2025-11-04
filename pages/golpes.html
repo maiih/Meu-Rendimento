@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Publicações – Cuidados com Golpes</title>
+
+  <!-- Font Awesome (opcional, só para ícones do título/barra) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+  <!-- Seu CSS -->
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body class="page-golpes">
+  <!-- Navbar (mantida) -->
+  <nav class="navbar">
+    <div class="logo">Meu Rendimento</div>
+    <ul class="nav-links">
+      <li><a href="#">Início</a></li>
+      <li><a href="#">Calculadora</a></li>
+      <li><a href="#">Dicas</a></li>
+      <li><a href="#">Golpes</a></li>
+    </ul>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="primary-nav">&#9776;</button>
+  </nav>
+
+  <!-- Conteúdo -->
+  <div class="frame">
+    <main class="paper" role="main" id="primary-nav">
+      <h1>
+        <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+        Publicações sobre Golpes
+        <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+      </h1>
+
+      <!-- GRADE DE NOTÍCIAS (somente imagem; hover mostra título; clique abre texto) -->
+      <section class="news-grid" aria-label="Lista de notícias">
+        <!-- Card 1 -->
+        <article class="news-card">
+          <a href="#" class="news-link" aria-haspopup="dialog">
+            <img src="../Img/sms.png" alt="Golpe via mensagens no celular">
+            <div class="news-overlay">
+              <h2 class="news-title">Golpes por SMS e Mensageiros</h2>
+              <span class="news-hint">Clique para ler</span>
+            </div>
+          </a>
+          <div class="news-details" hidden>
+            <h3>Golpes por SMS e Mensageiros</h3>
+            <p>Criminosos enviam links falsos se passando por bancos, empresas ou familiares. Evite clicar, não instale apps de fontes desconhecidas e jamais compartilhe senhas/códigos.</p>
+            <p><strong>Dicas rápidas:</strong> desconfie de ofertas “boas demais”, verifique o remetente e confirme por canais oficiais antes de transferir dinheiro.</p>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="news-card">
+          <a href="#" class="news-link" aria-haspopup="dialog">
+            <img src="../Img/cartao.jfif" alt="Golpe do cartão retido">
+            <div class="news-overlay">
+              <h2 class="news-title">Golpe do Cartão Retido</h2>
+              <span class="news-hint">Clique para ler</span>
+            </div>
+          </a>
+          <div class="news-details" hidden>
+            <h3>Golpe do Cartão Retido</h3>
+            <p>Golpistas instalam “chupa-cabra” e simulam erro no caixa. Nunca aceite ajuda de estranhos. Ligue para o banco usando o número oficial no verso do cartão.</p>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="news-card">
+          <a href="#" class="news-link" aria-haspopup="dialog">
+            <img src="../Img/loja.jfif" alt="Golpe de loja falsa na internet">
+            <div class="news-overlay">
+              <h2 class="news-title">Loja Online Falsa</h2>
+              <span class="news-hint">Clique para ler</span>
+            </div>
+          </a>
+          <div class="news-details" hidden>
+            <h3>Loja Online Falsa</h3>
+            <p>Sites falsos anunciam preços muito abaixo do mercado. Verifique o cadeado (https), CNPJ, avaliações e histórico. Desconfie de pagamento apenas por PIX.</p>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal acessível -->
+  <div class="modal" id="news-modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" data-close="true"></div>
+    <div class="modal-content" role="document" aria-labelledby="modal-title">
+      <button class="modal-close" type="button" aria-label="Fechar" data-close="true">×</button>
+      <div class="modal-body"><!-- conteúdo preenchido via JS --></div>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script>
+    // Menu mobile
+    (function () {
+      const toggle = document.getElementById("menu-toggle");
+      const navLinks = document.querySelector(".nav-links");
+      if (toggle && navLinks) {
+        toggle.addEventListener("click", () => {
+          const isOpen = navLinks.classList.toggle("active");
+          toggle.setAttribute("aria-expanded", String(isOpen));
+        });
+      }
+    })();
+
+    // Modal de notícia
+    (function () {
+      const modal = document.getElementById('news-modal');
+      const modalBody = modal.querySelector('.modal-body');
+      let lastFocus = null;
+
+      // Abre modal com conteúdo de um card
+      function openModalFromCard(card) {
+        const details = card.querySelector('.news-details');
+        if (!details) return;
+        modalBody.innerHTML = details.innerHTML;
+        modal.setAttribute('aria-hidden', 'false');
+        modal.classList.add('open');
+        lastFocus = document.activeElement;
+        // Foco no título do modal, se existir
+        const h = modalBody.querySelector('h3');
+        if (h) {
+          h.setAttribute('id', 'modal-title');
+          setTimeout(() => h.focus(), 0);
+          h.setAttribute('tabindex', '-1');
+        }
+        document.body.style.overflow = 'hidden';
+      }
+
+      // Fecha modal
+      function closeModal() {
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+        modalBody.innerHTML = '';
+        document.body.style.overflow = '';
+        if (lastFocus) lastFocus.focus();
+      }
+
+      // Clique nos cards (apenas botão esquerdo)
+      document.addEventListener('click', (ev) => {
+        const link = ev.target.closest('.news-link');
+        if (link) {
+          if (ev.button === 0) {
+            ev.preventDefault();
+            const card = link.closest('.news-card');
+            if (card) openModalFromCard(card);
+          }
+        }
+        if (ev.target.dataset.close === 'true') {
+          closeModal();
+        }
+      });
+
+      // Teclas: ESC para fechar, Enter/Espaço nos links para abrir
+      document.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Escape' && modal.classList.contains('open')) {
+          closeModal();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
