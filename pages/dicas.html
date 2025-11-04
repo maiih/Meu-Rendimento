@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dicas – Guia Passo a Passo</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+  <!-- Seu CSS -->
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body class="page-dicas">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">Meu Rendimento</div>
+    <ul class="nav-links">
+      <li><a href="#">Início</a></li>
+      <li><a href="#">Calculadora</a></li>
+      <li><a href="#">Dicas</a></li>
+      <li><a href="#">Golpes</a></li>
+    </ul>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu" aria-expanded="false">&#9776;</button>
+  </nav>
+
+  <!-- Conteúdo -->
+  <div class="frame-dicas">
+    <main class="paper-dicas">
+      <h1>
+        <i class="fa-solid fa-lightbulb"></i>
+        Guia de Educação Financeira
+        <i class="fa-solid fa-lightbulb"></i>
+      </h1>
+
+      <!-- Passo 1 -->
+      <section class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h2>Entenda sua renda</h2>
+          <p>Antes de qualquer coisa, saiba exatamente quanto você recebe por mês e de onde vem esse dinheiro.</p>
+        </div>
+      </section>
+
+      <!-- Passo 2 -->
+      <section class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h2>Liste suas despesas</h2>
+          <p>Anote todos os gastos fixos e variáveis. Isso ajuda a enxergar para onde o dinheiro está indo.</p>
+        </div>
+      </section>
+
+      <!-- Passo 3 -->
+      <section class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h2>Defina metas</h2>
+          <p>Estabeleça objetivos simples, como guardar uma parte do salário, pagar dívidas ou investir em algo seguro.</p>
+        </div>
+      </section>
+
+      <!-- Você pode continuar copiando a estrutura acima para mais passos -->
+    </main>
+  </div>
+
+  <script>
+    // Menu mobile
+    const toggle = document.getElementById("menu-toggle");
+    const navLinks = document.querySelector(".nav-links");
+    toggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("active");
+      toggle.setAttribute("aria-expanded", String(isOpen));
+    });
+  </script>
+</body>
+</html>

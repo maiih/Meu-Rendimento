@@ -20,12 +20,31 @@ input:focus {
     --cor-placeholder: #129812;
     --cor-texto-neutro: #333333;
     --cor-texto-claro: #76d079;
+    --bg: #E9F2FB;            /* calm blue background */
+    --paper: #FFFFFF;         /* card background */
+    --paper-alt: #F7FAFE;     /* subtle alternate paper */
+    --text: #1F2937;          /* slate-800 */
+    --muted: #6B7280;         /* slate-500 */
+    --accent: #0EA5E9;        /* sky-500 */
+    --accent-strong: #0369A1; /* sky-800 */
+    --success: #16A34A;       /* green-600 */
+    --warning: #B45309;       /* amber-700 */
+    --danger: #DC2626;        /* red-600 */
+    --ring: #94A3B8;          /* slate-400 */
+    --radius: 14px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.06);
+    --shadow-md: 0 6px 18px rgba(2, 6, 23, 0.08);
+    --shadow-lg: 0 12px 30px rgba(2, 6, 23, 0.12);
 }
 
 body {
     background-color: var(--cor-fundo-claro);
     font-family: 'Nunito', sans-serif;
 }
+
+/* ===========================================
+   BLOCO DE LOGIN / BASE VISUAL DO SISTEMA
+   =========================================== */
 
 .divlogin {
     flex-direction: column;
@@ -152,4 +171,153 @@ a {
     border: 2px solid var(--cor-verde-principal);
 }
 
-/* calculadora */
+/* ===========================================
+   // calculadora
+   =========================================== */
+
+.divlogin.calculadora {
+    background: var(--cor-fundo-input);
+    border: 2px solid var(--cor-borda-input);
+    border-radius: 15px;
+    padding: 30px 25px;
+    width: 500px;
+    max-width: 95%;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.divlogin.calculadora:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.formheader h1 {
+    font-size: 2rem;
+    text-align: center;
+    color: var(--cor-verde-principal);
+    margin-bottom: 10px;
+}
+
+.formheader p {
+    text-align: center;
+    color: var(--cor-texto-claro);
+    font-weight: 500;
+}
+
+#calc-form {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+#calc-form .btn-primary {
+    background: var(--cor-verde-botao);
+    border: none;
+    color: white;
+    padding: 12px;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#calc-form .btn-primary:hover {
+    background: var(--cor-verde-principal);
+    transform: scale(1.02);
+}
+
+#calc-form .btn-primary i {
+    margin-right: 6px;
+}
+
+#result {
+    margin-top: 25px;
+    background: linear-gradient(135deg, #e9f9eb, #d3f2d5);
+    border: 2px solid var(--cor-borda-input);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+    animation: aparecer 0.5s ease forwards;
+}
+
+#result h5 {
+    color: var(--cor-verde-principal);
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+#result p {
+    color: var(--cor-texto-neutro);
+    font-size: 1rem;
+}
+
+#fv-result {
+    color: var(--cor-verde-principal);
+    font-weight: bold;
+}
+
+#real-result {
+    color: var(--cor-texto-claro);
+    font-size: 0.95rem;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===========================================
+   BLOCO GOLPES + DICAS (mantido da master)
+   =========================================== */
+
+/* Page Golpes CSS - Base acessível para idosos e responsiva */
+.page-golpes {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 96px 16px 40px;
+  background: transparent;
+  color: var(--text);
+}
+
+/* Paper (cartões de conteúdo) */
+.paper {
+  background: var(--paper);
+  padding: clamp(20px,3.5vw,36px);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(2,6,23,.06);
+}
+
+/* Page Dicas – Passo a Passo */
+.page-dicas {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 96px 16px 40px;
+  background: var(--bg, #E9F2FB);
+  color: var(--text, #1F2937);
+}
+
+.frame-dicas {
+  width: 100%;
+  max-width: 900px;
+}
+
+.paper-dicas {
+  background: #fff;
+  padding: clamp(24px, 4vw, 40px);
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.08);
+  border: 1px solid rgba(0,0,0,.06);
+}
