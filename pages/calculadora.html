@@ -41,17 +41,18 @@
 </style>
 </head>
 <body>
-     <nav class="navbar">
+      <nav class="navbar">
     <div class="logo">Meu Rendimento</div>
     <ul class="nav-links">
-      <li><a href="#">Início</a></li>
-      <li><a href="#">Calculadora</a></li>
-      <li><a href="#">Dicas</a></li>
-      <li><a href="#">Golpes</a></li>
+      <li><a href="../index.html">Início</a></li>
+      <li><a href="../pages/calculadora.html">Calculadora</a></li>
+      <li><a href="../pages/dicas.html">Dicas</a></li>
+      <li><a href="../pages/golpes.html">Golpes</a></li>
     </ul>
-    <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="primary-nav">&#9776;</button>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu" aria-expanded="false">&#9776;</button>
   </nav>
-  <h1>Calculadora de Investimentos — Portfólio</h1>
+ <main class="maincalc">
+     <h1 class="mt-4">Calculadora de Investimentos — Portfólio</h1>
   <p class="muted">Escolha entre tipos de investimento, atribua % de alocação e calcule o valor futuro do portfólio (aporte mensal + PV). Edite taxas se quiser.</p>
 
   <label>Investimento inicial (R$)
@@ -103,6 +104,7 @@
 
   <div id="tableWrap"></div>
 
+ </main>
 <!-- SCRIPT FUNCIONAL DO PORTFÓLIO -->
 <script>
 /* Lista de investimentos (33 opções) */
