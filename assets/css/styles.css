@@ -279,7 +279,7 @@ a {
 }
 
 /* ==========================================================
-   PÁGINA GOLPES
+   PÁGINA GOLPES — GALERIA DE NOTÍCIAS
    ========================================================== */
 .page-golpes {
   display: flex;
@@ -305,6 +305,26 @@ a {
   border: 1px solid rgba(2, 6, 23, .06);
 }
 
+.paper h1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  color: var(--accent-strong);
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 800;
+  margin: 0 0 22px 0;
+  padding: 14px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, var(--paper), var(--paper-alt));
+  border: 1px solid rgba(2, 6, 23, .06);
+  box-shadow: var(--shadow-sm);
+}
+.paper h1 i {
+  color: var(--warning);
+}
+
 .news-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -315,19 +335,156 @@ a {
   position: relative;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
   background: #000;
+  isolation: isolate;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.news-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.news-link {
+  display: block;
+  position: relative;
+  outline: none;
 }
 
 .news-link img {
   width: 100%;
-  height: 220px;
+  height: 240px;
   object-fit: cover;
-  transition: transform .35s ease;
+  transition: transform 0.35s ease;
+  display: block;
 }
 
-.news-card:hover img {
-  transform: scale(1.03);
+.news-card:hover img,
+.news-link:focus-visible img {
+  transform: scale(1.05);
+}
+
+.news-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 14px;
+  background: linear-gradient(0deg, rgba(0, 0, 0, .55) 0%, rgba(0, 0, 0, .15) 60%, rgba(0, 0, 0, 0) 100%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.news-card:hover .news-overlay,
+.news-link:focus-visible + .news-overlay {
+  opacity: 1;
+}
+
+.news-title {
+  margin: 0;
+  padding: .35rem .6rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .9);
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 800;
+  text-align: center;
+  max-width: 90%;
+}
+
+.news-hint {
+  margin-top: 8px;
+  font-size: .9rem;
+  color: #e5e7eb;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .6);
+}
+
+/* ==========================================================
+   MODAL — PÁGINA GOLPES
+   ========================================================== */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 1200;
+}
+
+.modal.open {
+  display: block;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.5);
+  backdrop-filter: blur(2px);
+}
+
+.modal-content {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(760px, 94vw);
+  background: var(--paper);
+  color: var(--text);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(2, 6, 23, 0.06);
+  max-height: 86vh;
+  overflow: auto;
+  animation: modalFadeIn 0.25s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -46%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.modal-body {
+  padding: 22px 26px 26px;
+}
+
+.modal-body h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--accent-strong);
+}
+
+.modal-body p {
+  margin: 0 0 12px 0;
+  line-height: 1.8;
+}
+
+.modal-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  color: #334155;
+  padding: 6px 8px;
+  border-radius: 10px;
+}
+
+.modal-close:hover,
+.modal-close:focus-visible {
+  background: #f1f5f9;
+  outline: none;
 }
 
 /* ==========================================================
@@ -396,9 +553,4 @@ a {
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--success);
-}
-
-main.maincalc {
-  margin-top: 100px;
-  margin-bottom: 40px;
 }
